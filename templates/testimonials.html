@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+
+<body>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #D3CCE3;
+            background: -webkit-linear-gradient(to bottom, #E9E4F0, #D3CCE3);
+            background: linear-gradient(to bottom, #E9E4F0, #D3CCE3);
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .testimonials-container {
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 70px 50px 50px;
+            transition: all 0.3s ease-in;
+            margin: 20px;
+            max-width: 100%;
+        }
+
+        .fa-quote-left {
+            color: rgba(0, 0, 0, 0.15);
+            font-size: 50px;
+        }
+
+        .text {
+            line-height: 30px;
+            margin: 40px 0 20px;
+            min-height: 150px;
+            max-width: 600px;
+            text-align: justify;
+            word-spacing: 5px;
+        }
+
+        .name {
+            align-self: flex-end;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .authors-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .author {
+            margin: 30px 30px 0;
+            cursor: pointer;
+        }
+
+        .author.selected img {
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+            transform: scale(1.2);
+        }
+
+        .author img {
+            transition: all 0.3s ease-in;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+        }
+
+
+
+        /* SOCIAL PANEL CSS */
+        .social-panel-container {
+            position: fixed;
+            right: 0;
+            bottom: 80px;
+            transform: translateX(100%);
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .social-panel-container.visible {
+            transform: translateX(-10px);
+        }
+
+        .social-panel {
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 16px 31px -17px rgba(0, 31, 97, 0.6);
+            border: 5px solid #001F61;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Muli';
+            position: relative;
+            height: 169px;
+            width: 370px;
+            max-width: calc(100% - 10px);
+        }
+
+        .social-panel button.close-btn {
+            border: 0;
+            color: #97A5CE;
+            cursor: pointer;
+            font-size: 20px;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+
+        .social-panel button.close-btn:focus {
+            outline: none;
+        }
+
+        .social-panel p {
+            background-color: #001F61;
+            border-radius: 0 0 10px 10px;
+            color: #fff;
+            font-size: 14px;
+            line-height: 18px;
+            padding: 2px 17px 6px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            margin: 0;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 235px;
+        }
+
+        .social-panel p i {
+            margin: 0 5px;
+        }
+
+        .social-panel p a {
+            color: #FF7500;
+            text-decoration: none;
+        }
+
+        .social-panel h4 {
+            margin: 20px 0;
+            color: #97A5CE;
+            font-family: 'Muli';
+            font-size: 14px;
+            line-height: 18px;
+            text-transform: uppercase;
+        }
+
+        .social-panel ul {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .social-panel ul li {
+            margin: 0 10px;
+        }
+
+        .social-panel ul li a {
+            border: 1px solid #DCE1F2;
+            border-radius: 50%;
+            color: #001F61;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            width: 50px;
+            text-decoration: none;
+        }
+
+        .social-panel ul li a:hover {
+            border-color: #FF6A00;
+            box-shadow: 0 9px 12px -9px #FF6A00;
+        }
+
+        .floating-btn {
+            border-radius: 26.5px;
+            background-color: #001F61;
+            border: 1px solid #001F61;
+            box-shadow: 0 16px 22px -17px #03153B;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 20px;
+            padding: 12px 20px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+
+        .floating-btn:hover {
+            background-color: #ffffff;
+            color: #001F61;
+        }
+
+        .floating-btn:focus {
+            outline: none;
+        }
+
+        .floating-text {
+            background-color: #001F61;
+            border-radius: 10px 10px 0 0;
+            color: #fff;
+            font-family: 'Muli';
+            padding: 7px 15px;
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 998;
+        }
+
+        .floating-text a {
+            color: #FF7500;
+            text-decoration: none;
+        }
+
+        @media screen and (max-width: 480px) {
+
+            .social-panel-container.visible {
+                transform: translateX(0px);
+            }
+
+            .floating-btn {
+                right: 10px;
+            }
+        }
+
+        .custom-btn {
+            width: 130px;
+            height: 40px;
+            color: #fff;
+            border-radius: 5px;
+            padding: 10px 25px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 500;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+            box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+                7px 7px 20px 0px rgba(0, 0, 0, .1),
+                4px 4px 5px 0px rgba(0, 0, 0, .1);
+            outline: none;
+        }
+
+        /* 9 */
+        .btn-9 {
+            border: none;
+            transition: all 0.3s ease;
+            overflow: hidden;
+
+        }
+
+        .btn-9:after {
+            position: absolute;
+            content: " ";
+            z-index: -1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1fd1f9;
+            background-image: linear-gradient(315deg, #1fd1f9 0%, #b621fe 74%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-9:hover {
+            background: transparent;
+            box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, .5),
+                -4px -4px 6px 0 rgba(116, 125, 136, .2),
+                inset -4px -4px 6px 0 rgba(255, 255, 255, .5),
+                inset 4px 4px 6px 0 rgba(116, 125, 136, .3);
+            color: #fff;
+        }
+
+        .btn-9:hover:after {
+            -webkit-transform: scale(2) rotate(180deg);
+            transform: scale(2) rotate(180deg);
+            box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, .5),
+                -4px -4px 6px 0 rgba(116, 125, 136, .2),
+                inset -4px -4px 6px 0 rgba(255, 255, 255, .5),
+                inset 4px 4px 6px 0 rgba(116, 125, 136, .3);
+        }
+    </style>
+
+    <div>
+        <div class="testimonials-container">
+            <h1 style="font-family:'Courier New', Courier, monospace">People's Opinions....</h1>
+            <i class="fas fa-quote-left"></i>
+            <p class="text"></p>
+            <strong class="name"></strong>
+            <div class="authors-container">
+                <div class="author selected"><img src="https://randomuser.me/api/portraits/men/41.jpg" alt=""></div>
+                <div class="author"><img src="https://randomuser.me/api/portraits/women/50.jpg" alt=""></div>
+                <div class="author"><img src="https://randomuser.me/api/portraits/women/22.jpg" alt=""></div>
+                <div class="author"><img src="https://randomuser.me/api/portraits/women/76.jpg" alt=""></div>
+                <div class="author"><img src="https://randomuser.me/api/portraits/men/17.jpg" alt=""></div>
+            </div>
+            <br><a href="./index.html"><button class="custom-btn btn-9">Homepage</button></a>
+        </div>
+
+    </div>
+
+
+    <script>
+        const authorsEl = document.querySelectorAll('.author');
+        const container = document.querySelector('.testimonials-container');
+        const nameEl = document.querySelector('.name');
+        const textEl = document.querySelector('.text');
+
+        const testimonials = [{
+            text: 'I had my concerns that due to a tight deadline this project can\'t be done. But Ionut Iacob proved me wrong not only he delivered an outstanding work but he managed to deliver 1 day prior to the deadline. And when I asked for some revisions he made them in MINUTES. I\'m looking forward to work with him again and I totally recommend him. Thanks again Florin!',
+            name: 'Arthur Birnbaum',
+            color: 'rgba(235, 59, 90,1.0)'
+        }, {
+            text: 'Second time hiring him. Finished everything in a timely manner and his work is excellent. Can\'t recommend him enough.',
+            name: 'Phoebe Kotliar',
+            color: 'rgba(250, 130, 49,1.0)'
+        }, {
+            text: 'Ionut Iacob never fails to impress me by the quality of his work and delivering on time. When it comes to front-end, he is definitely my go to guy. Always is a pleasure to work with Alexandru even when deadlines are tight and pressure is great. It\'s reassuring to have a project in such good hands.',
+            name: 'Louisa P. Huard',
+            color: 'rgba(75, 123, 236,1.0)'
+        }, {
+            text: 'Iacob Ionut has been of great help on our different web projects. He is very trustworthy and serious in the work done. Keep on the good work and energy, been a pleasure to collaborate.',
+            name: 'Cristina Aurmoogum',
+            color: 'rgba(165, 94, 234,1.0)'
+        }, {
+            text: 'I hired Iacob Ionut based on others positive experiences, and I understand why he\'s so highly rated. His code is very clean, he communicates well, and he likes to offer alternative solutions.',
+            name: 'J. Kent Pepper',
+            color: 'rgba(32, 191, 107,1.0)'
+        }];
+
+        addTestimonial(0);
+
+        authorsEl.forEach((author, idx) => {
+            author.addEventListener('click', (e) => {
+                addTestimonial(idx);
+                author.classList.add('selected');
+            })
+        });
+
+        function addTestimonial(idx) {
+            const testimonial = testimonials[idx];
+
+            nameEl.innerHTML = testimonial.name;
+            textEl.innerHTML = testimonial.text;
+            container.style.background = testimonial.color;
+            container.style.boxShadow = `0 35px 10px -20px ${testimonial.color.substring(0, testimonial.color.length - 4)}0.9)`;
+
+            authorsEl.forEach(author => {
+                author.classList.remove('selected');
+            });
+        }
+
+        // SOCIAL PANEL JS
+        const floating_btn = document.querySelector('.floating-btn');
+        const close_btn = document.querySelector('.close-btn');
+        const social_panel_container = document.querySelector('.social-panel-container');
+
+        floating_btn.addEventListener('click', () => {
+            social_panel_container.classList.toggle('visible')
+        });
+
+        close_btn.addEventListener('click', () => {
+            social_panel_container.classList.remove('visible')
+        });
+    </script>
+</body>
+
+</html>
